@@ -1,0 +1,12 @@
+name: UltimateTag
+version: ${project.version}
+main: com.javabuckets.ultimatetag.UltimateTag
+authors: [JavaBuckets]
+description: You have two minutes to avoid being tagged by the others.
+api-version: 1.13
+
+commands:
+   ultimatetag:
+      description: Start the game of ultimate tag
+      usage: /ultimatetag ...<player>
+      permission: ultimatetag.canstart

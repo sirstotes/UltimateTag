@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UltimateTag:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UltimateTag_jar</output-path>
+    <root id="archive" name="UltimateTag.jar">
+      <element id="module-output" name="UltimateTag" />
+    </root>
+  </artifact>
+</component>
