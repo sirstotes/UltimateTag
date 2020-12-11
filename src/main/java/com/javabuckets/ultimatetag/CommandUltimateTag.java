@@ -22,7 +22,7 @@ public class CommandUltimateTag implements CommandExecutor {
             if (args.length == 0) {
                 if (UltimateTag.isRunning) {
                     playerSender.sendMessage("A game is already in progress");
-                    return false;
+                    return true;
                 }
 
                 playerSender.sendMessage("All players will be assigned as contestants");
@@ -34,14 +34,14 @@ public class CommandUltimateTag implements CommandExecutor {
                 return true;
 
             } else {
-                if (UltimateTag.isRunning) {
-                    playerSender.sendMessage("A game is already in progress");
-                    return false;
-                }
-
                 if (args[0].equals("stop")) {
                     UltimateTag.deinitialize();
                     Bukkit.broadcastMessage("UltimateTag has stopped");
+                    return true;
+                }
+
+                if (UltimateTag.isRunning) {
+                    playerSender.sendMessage("A game is already in progress");
                     return true;
                 }
 
@@ -52,7 +52,7 @@ public class CommandUltimateTag implements CommandExecutor {
 
                     if (p == null) {
                         UltimateTag.contestants.clear();
-                        return false;
+                        return true;
                     } else {
                         UltimateTag.contestants.add(p);
                     }
