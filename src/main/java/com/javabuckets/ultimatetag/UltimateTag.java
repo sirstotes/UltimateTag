@@ -4,6 +4,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public final class UltimateTag extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        this.getCommand("ultimatetag").setExecutor(new CommandUltimateTag());
+        this.getCommand("ultimatetag").setExecutor(new CommandUltimateTag(this));
 
         getServer().getPluginManager().registerEvents(new PlayerEventListener(), this);
 
@@ -43,7 +45,7 @@ public final class UltimateTag extends JavaPlugin {
 
                     // There are no more players, taggers win
                     if (!roles.containsValue(Role.PLAYER)) {
-                        contestants.forEach(contestant -> contestant.sendMessage("Everyone has been caught! Taggers win!"));
+                        contestants.forEach(contestant -> contestant.sendMessage("Everyone has been tagged! Taggers win!"));
                         deinitialize();
                     }
 
@@ -57,11 +59,13 @@ public final class UltimateTag extends JavaPlugin {
         }, 0, 20); // Should be every second
     }
 
-    public static void initialize() {
+    public static void initialize(JavaPlugin plugin) {
         // Decide on a tagger
         Random random = new Random();
         int taggerIndex = random.nextInt(contestants.size());
         Player tagger = contestants.get(taggerIndex);
+        tagger.setDisplayName(ChatColor.AQUA + tagger.getName());
+        tagger.setPlayerListName(ChatColor.AQUA + tagger.getName());
 
         // Assign roles to all contestants
         for (Player contestant : contestants) {
@@ -82,6 +86,8 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         Location center = findSuitableCenter(gameWorld);
+        gameWorld.getChunkAt(center).load();
+        gameWorld.setTime(0);
 
         // Teleport the contestants
         for (Player contestant : contestants) {
@@ -91,6 +97,8 @@ public final class UltimateTag extends JavaPlugin {
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
 
+            contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1));
+
             contestant.teleport(location);
 
             // Reset player stats and inventory
@@ -98,11 +106,15 @@ public final class UltimateTag extends JavaPlugin {
 
             // Give players starter items
             contestant.getInventory().addItem(
-                    new ItemStack(Material.DIAMOND_PICKAXE),
-                    new ItemStack(Material.DIAMOND_SHOVEL),
-                    new ItemStack(Material.DIAMOND_AXE),
-                    new ItemStack(Material.COBBLESTONE, 16)
+                    new ItemStack(Material.IRON_PICKAXE),
+                    new ItemStack(Material.IRON_SHOVEL),
+                    new ItemStack(Material.IRON_AXE),
+                    new ItemStack(Material.COBBLESTONE, 16),
+                    new ItemStack(Material.WATER_BUCKET)
             );
+
+            // Reset their possible bed location to their teleport location
+            contestant.setBedSpawnLocation(location);
         }
 
         // Set the world border
@@ -140,6 +152,8 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setFoodLevel(20);
         contestant.setHealth(20);
         contestant.setExhaustion(0);
+        contestant.setDisplayName(contestant.getName());
+        contestant.setPlayerListName(contestant.getName());
     }
 
     public static Location findSuitableCenter(World world) {

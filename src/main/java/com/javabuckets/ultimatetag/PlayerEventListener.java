@@ -1,5 +1,7 @@
 package com.javabuckets.ultimatetag;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,8 +18,11 @@ public class PlayerEventListener implements Listener {
 
                 if (UltimateTag.roles.get(damager) == Role.TAGGER && UltimateTag.roles.get(target) == Role.PLAYER) {
                     UltimateTag.roles.put(target, Role.TAGGER);
+                    Bukkit.broadcastMessage(target.getDisplayName() + " has been tagged!");
                     target.sendMessage("You've been tagged!");
-                    damager.sendMessage("You caught " + target.getDisplayName() + "!");
+                    target.setDisplayName(ChatColor.AQUA + target.getName());
+                    target.setPlayerListName(ChatColor.AQUA + target.getName());
+                    damager.sendMessage("You tagged " + target.getDisplayName() + "!");
                 }
             }
         }
