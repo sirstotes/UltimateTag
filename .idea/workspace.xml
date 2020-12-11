@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="420a2270-20c8-4710-b6ce-ff7cc099525b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -20,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UltimateTag.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UltimateTag.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-68">
-              <caret line="88" column="44" lean-forward="true" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
+            <state relative-caret-position="697">
+              <caret line="126" column="10" selection-start-line="126" selection-start-column="10" selection-end-line="126" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -53,7 +53,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandUltimateTag.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CommandUltimateTag.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="145">
@@ -88,8 +88,8 @@
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/PlayerEventListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java" />
       </list>
     </option>
   </component>
@@ -386,12 +386,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-68">
-          <caret line="88" column="44" lean-forward="true" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
+        <state relative-caret-position="145">
+          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#397#398#0" expanded="true" />
+            <element signature="e#433#434#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -406,14 +408,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/CommandUltimateTag.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/javabuckets/ultimatetag/UltimateTag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+        <state relative-caret-position="697">
+          <caret line="126" column="10" selection-start-line="126" selection-start-column="10" selection-end-line="126" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#397#398#0" expanded="true" />
-            <element signature="e#433#434#0" expanded="true" />
           </folding>
         </state>
       </provider>

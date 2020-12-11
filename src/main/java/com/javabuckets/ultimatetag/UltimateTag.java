@@ -98,6 +98,7 @@ public final class UltimateTag extends JavaPlugin {
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
 
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1));
+            contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
 
             contestant.teleport(location);
 
@@ -116,6 +117,14 @@ public final class UltimateTag extends JavaPlugin {
             // Reset their possible bed location to their teleport location
             contestant.setBedSpawnLocation(location);
         }
+
+        // Give tagger some additional items
+        tagger.getInventory().addItem(
+                new ItemStack(Material.BOW),
+                new ItemStack(Material.ARROW, 64),
+                new ItemStack(Material.ARROW, 64),
+                new ItemStack(Material.ARROW, 64)
+        );
 
         // Set the world border
         WorldBorder border = gameWorld.getWorldBorder();
