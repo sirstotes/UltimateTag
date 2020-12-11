@@ -20,27 +20,29 @@ public class CommandUltimateTag implements CommandExecutor {
             Player playerSender = (Player) sender;
 
             if (args.length == 0) {
-                if (args[0].equals("stop")) {
-                    UltimateTag.deinitialize();
-                    Bukkit.broadcastMessage("UltimateTag has stopped");
-                } else {
-                    if (UltimateTag.isRunning) {
-                        playerSender.sendMessage("A game is already in progress");
-                        return false;
-                    }
-
-                    playerSender.sendMessage("All players will be assigned as contestants");
-
-                    UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
-
-                    UltimateTag.initialize(plugin);
-
-                    return true;
+                if (UltimateTag.isRunning) {
+                    playerSender.sendMessage("A game is already in progress");
+                    return false;
                 }
+
+                playerSender.sendMessage("All players will be assigned as contestants");
+
+                UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
+
+                UltimateTag.initialize(plugin);
+
+                return true;
+
             } else {
                 if (UltimateTag.isRunning) {
                     playerSender.sendMessage("A game is already in progress");
                     return false;
+                }
+
+                if (args[0].equals("stop")) {
+                    UltimateTag.deinitialize();
+                    Bukkit.broadcastMessage("UltimateTag has stopped");
+                    return true;
                 }
 
                 UltimateTag.contestants.add(playerSender);
