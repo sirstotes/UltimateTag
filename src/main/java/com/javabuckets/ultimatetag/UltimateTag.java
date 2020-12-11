@@ -1,8 +1,10 @@
 package com.javabuckets.ultimatetag;
 
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -71,10 +73,10 @@ public final class UltimateTag extends JavaPlugin {
         for (Player contestant : contestants) {
             if (contestant == tagger) {
                 roles.put(contestant, Role.TAGGER);
-                contestant.sendMessage("You are the tagger!");
+                contestant.sendMessage(ChatColor.RED + "You are the tagger!");
             } else {
                 roles.put(contestant, Role.PLAYER);
-                contestant.sendMessage(tagger.getDisplayName() + " is the tagger!");
+                contestant.sendMessage(ChatColor.RED + tagger.getDisplayName() + " is the tagger!");
             }
         }
 
@@ -89,7 +91,6 @@ public final class UltimateTag extends JavaPlugin {
         gameWorld.getChunkAt(center).load();
         gameWorld.setTime(0);
 
-        // Teleport the contestants
         for (Player contestant : contestants) {
             int playerRandomX = center.getBlockX() + random.nextInt(64) - 32;
             int playerRandomZ = center.getBlockZ() + random.nextInt(64) - 32;
@@ -97,19 +98,39 @@ public final class UltimateTag extends JavaPlugin {
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
 
+            // Potion effects
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1));
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
+            if (contestant != tagger) {
+                contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
+            }
 
+            // Teleport the contestants
             contestant.teleport(location);
 
             // Reset player stats and inventory
             resetContestant(contestant);
 
             // Give players starter items
+            ItemStack pickaxe = new ItemStack(Material.IRON_PICKAXE);
+            ItemMeta pickaxeMeta = pickaxe.getItemMeta();
+            pickaxeMeta.setUnbreakable(true);
+            pickaxe.setItemMeta(pickaxeMeta);
+
+            ItemStack shovel = new ItemStack(Material.IRON_SHOVEL);
+            ItemMeta shovelMeta = shovel.getItemMeta();
+            shovelMeta.setUnbreakable(true);
+            shovel.setItemMeta(shovelMeta);
+
+            ItemStack axe = new ItemStack(Material.IRON_AXE);
+            ItemMeta axeMeta = axe.getItemMeta();
+            axeMeta.setUnbreakable(true);
+            axe.setItemMeta(axeMeta);
+
             contestant.getInventory().addItem(
-                    new ItemStack(Material.IRON_PICKAXE),
-                    new ItemStack(Material.IRON_SHOVEL),
-                    new ItemStack(Material.IRON_AXE),
+                    pickaxe,
+                    shovel,
+                    axe,
                     new ItemStack(Material.COBBLESTONE, 16),
                     new ItemStack(Material.WATER_BUCKET)
             );
@@ -119,11 +140,17 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         // Give tagger some additional items
+        ItemStack bow = new ItemStack(Material.BOW);
+        ItemMeta bowMeta = bow.getItemMeta();
+        bowMeta.setUnbreakable(true);
+        bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+        bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
+        bow.setItemMeta(bowMeta);
+
         tagger.getInventory().addItem(
-                new ItemStack(Material.BOW),
-                new ItemStack(Material.ARROW, 64),
-                new ItemStack(Material.ARROW, 64),
-                new ItemStack(Material.ARROW, 64)
+                bow,
+                new ItemStack(Material.FISHING_ROD),
+                new ItemStack(Material.ARROW, 1)
         );
 
         // Set the world border
