@@ -10,9 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public final class UltimateTag extends JavaPlugin {
 
@@ -99,10 +97,17 @@ public final class UltimateTag extends JavaPlugin {
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
 
             // Potion effects
-            contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1));
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
+
             if (contestant != tagger) {
-                contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
+                contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,140, 1));
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
+                    }
+                }, 7000);
             }
 
             // Teleport the contestants
@@ -190,6 +195,7 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setExhaustion(0);
         contestant.setDisplayName(contestant.getName());
         contestant.setPlayerListName(contestant.getName());
+        contestant.setGameMode(GameMode.SURVIVAL);
     }
 
     public static Location findSuitableCenter(World world) {
