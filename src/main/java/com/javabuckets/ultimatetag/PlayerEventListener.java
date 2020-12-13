@@ -2,16 +2,11 @@ package com.javabuckets.ultimatetag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PlayerEventListener implements Listener {
     @EventHandler
@@ -19,64 +14,39 @@ public class PlayerEventListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player target = (Player) event.getEntity();
 
-            if (event.getDamager() instanceof Player) {
-                Player damager = (Player) event.getDamager();
+            if (UltimateTag.isRunning) {
+                if (event.getDamager() instanceof Player) {
+                    Player damager = (Player) event.getDamager();
 
-                if (UltimateTag.roles.get(damager) == Role.TAGGER && UltimateTag.roles.get(target) == Role.PLAYER) {
-                    UltimateTag.roles.put(target, Role.TAGGER);
+                    if (UltimateTag.roles.get(damager) == Role.TAGGER && UltimateTag.roles.get(target) == Role.PLAYER) {
+                        UltimateTag.makeTagger(target);
 
-                    Bukkit.broadcastMessage(target.getDisplayName() + " has been tagged!");
-                    target.sendMessage(ChatColor.RED + "You've been tagged!");
-                    target.setDisplayName(ChatColor.AQUA + target.getName());
-                    target.setPlayerListName(ChatColor.AQUA + target.getName());
-                    damager.sendMessage("You tagged " + target.getDisplayName() + "!");
-
-                    // Target is now a tagger, so give them tagger items
-                    ItemStack bow = new ItemStack(Material.BOW);
-                    ItemMeta bowMeta = bow.getItemMeta();
-                    bowMeta.setUnbreakable(true);
-                    bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                    bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
-                    bow.setItemMeta(bowMeta);
-
-                    target.getInventory().addItem(
-                            bow,
-                            new ItemStack(Material.FISHING_ROD),
-                            new ItemStack(Material.ARROW, 1)
-                    );
-
-                    target.removePotionEffect(PotionEffectType.GLOWING);
+                        Bukkit.broadcastMessage(target.getDisplayName() + " has been tagged!");
+                        target.sendMessage(ChatColor.RED + "You've been tagged!");
+                        damager.sendMessage("You tagged " + target.getDisplayName() + "!");
+                    }
                 }
             }
         }
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Player target = event.getEntity();
-        if (UltimateTag.isRunning) {
-            if (UltimateTag.roles.get(target) == Role.PLAYER) {
-                UltimateTag.roles.put(target, Role.TAGGER);
+    public void onPlayerDeath(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player target = (Player) event.getEntity();
 
-                target.sendMessage(ChatColor.RED + "Because you died you are a now a tagger!");
-                target.setDisplayName(ChatColor.AQUA + target.getName());
-                target.setPlayerListName(ChatColor.AQUA + target.getName());
+            if (UltimateTag.isRunning) {
+                if (UltimateTag.roles.get(target) == Role.PLAYER) {
+                    if (target.getHealth() - event.getDamage() < 1) {
+                        UltimateTag.makeTagger(target);
 
-                // Target is now a tagger, so give them tagger items
-                ItemStack bow = new ItemStack(Material.BOW);
-                ItemMeta bowMeta = bow.getItemMeta();
-                bowMeta.setUnbreakable(true);
-                bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
-                bow.setItemMeta(bowMeta);
+                        Bukkit.broadcastMessage(target.getDisplayName() + " died and is now also a tagger!");
+                        target.sendMessage(ChatColor.RED + "Because you died you are a now a tagger!");
 
-                target.getInventory().addItem(
-                        bow,
-                        new ItemStack(Material.FISHING_ROD),
-                        new ItemStack(Material.ARROW, 1)
-                );
-
-                target.removePotionEffect(PotionEffectType.GLOWING);
+                        target.setHealth(20);
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
     }

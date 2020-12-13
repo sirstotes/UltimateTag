@@ -102,12 +102,12 @@ public final class UltimateTag extends JavaPlugin {
             if (contestant != tagger) {
                 contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,140, 1));
 
-                new Timer().schedule(new TimerTask() {
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
                         contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
                     }
-                }, 7000);
+                }, 140);
             }
 
             // Teleport the contestants
@@ -152,9 +152,14 @@ public final class UltimateTag extends JavaPlugin {
         bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
         bow.setItemMeta(bowMeta);
 
+        ItemStack rod = new ItemStack(Material.FISHING_ROD);
+        ItemMeta rodMeta = rod.getItemMeta();
+        rodMeta.setUnbreakable(true);
+        rod.setItemMeta(rodMeta);
+
         tagger.getInventory().addItem(
                 bow,
-                new ItemStack(Material.FISHING_ROD),
+                rod,
                 new ItemStack(Material.ARROW, 1)
         );
 
@@ -196,6 +201,34 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setDisplayName(contestant.getName());
         contestant.setPlayerListName(contestant.getName());
         contestant.setGameMode(GameMode.SURVIVAL);
+    }
+
+    public static void makeTagger(Player contestant) {
+        UltimateTag.roles.put(contestant, Role.TAGGER);
+
+        contestant.setDisplayName(ChatColor.AQUA + contestant.getName());
+        contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
+
+        // Target is now a tagger, so give them tagger items
+        ItemStack bow = new ItemStack(Material.BOW);
+        ItemMeta bowMeta = bow.getItemMeta();
+        bowMeta.setUnbreakable(true);
+        bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+        bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
+        bow.setItemMeta(bowMeta);
+
+        ItemStack rod = new ItemStack(Material.FISHING_ROD);
+        ItemMeta rodMeta = rod.getItemMeta();
+        rodMeta.setUnbreakable(true);
+        rod.setItemMeta(rodMeta);
+
+        contestant.getInventory().addItem(
+                bow,
+                rod,
+                new ItemStack(Material.ARROW, 1)
+        );
+
+        contestant.removePotionEffect(PotionEffectType.GLOWING);
     }
 
     public static Location findSuitableCenter(World world) {
