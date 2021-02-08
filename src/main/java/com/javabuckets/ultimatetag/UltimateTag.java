@@ -21,13 +21,13 @@ public final class UltimateTag extends JavaPlugin {
     public static int defaultTimer = 2 * 60;
     public static int timer = 2 * 60; // minutes * seconds_converter
 
-    public static ArrayList<ItemStack> taggerItemsDefault = new ArrayList<>();
-    public static ArrayList<ItemStack> playerItemsDefault = new ArrayList<>();
-    public static ArrayList<ItemStack> taggerItems = new ArrayList<>();
-    public static ArrayList<ItemStack> playerItems = new ArrayList<>();
+    public static ArrayList<ItemStack> taggerItemsDefault = new ArrayList<ItemStack>();
+    public static ArrayList<ItemStack> playerItemsDefault = new ArrayList<ItemStack>();
+    public static ArrayList<ItemStack> taggerItems = new ArrayList<ItemStack>();
+    public static ArrayList<ItemStack> playerItems = new ArrayList<ItemStack>();
 
-    public static ArrayList<Player> contestants = new ArrayList<>();
-    public static HashMap<Player, Role> roles = new HashMap<>();
+    public static ArrayList<Player> contestants = new ArrayList<Player>();
+    public static HashMap<Player, Role> roles = new HashMap<Player, Role>();
 
     @Override
     public void onEnable() {
@@ -94,7 +94,7 @@ public final class UltimateTag extends JavaPlugin {
         playerItemsDefault.add(new ItemStack(Material.COBBLESTONE, 16));
         playerItemsDefault.add(new ItemStack(Material.WATER_BUCKET));
 
-        playerItems = playerItemsDefault.clone();
+        playerItems = (ArrayList) playerItemsDefault.clone();
 
         ItemStack bow = new ItemStack(Material.BOW);
         ItemMeta bowMeta = bow.getItemMeta();
@@ -110,7 +110,7 @@ public final class UltimateTag extends JavaPlugin {
         rod.setItemMeta(rodMeta);
         taggerItemsDefault.add(rod);
         taggerItemsDefault.add(new ItemStack(Material.ARROW, 1));
-        taggerItems = taggerItemsDefault.clone();
+        taggerItems = (ArrayList) taggerItemsDefault.clone();
     }
 
     public static void initialize(JavaPlugin plugin) {
@@ -126,10 +126,10 @@ public final class UltimateTag extends JavaPlugin {
         for (Player contestant : contestants) {
             if (contestant == tagger) {
                 roles.put(contestant, Role.TAGGER);
-                contestant.sendTitle(ChatColor.RED + "You are the tagger!");
+                contestant.sendTitle(ChatColor.RED + "You are the tagger!", "Try to tag everyone else!");
             } else {
                 roles.put(contestant, Role.PLAYER);
-                contestant.sendTitle(ChatColor.RED + tagger.getDisplayName() + " is the tagger!");
+                contestant.sendTitle(ChatColor.RED + tagger.getDisplayName() + " is the tagger!", "Try not to be tagged!");
             }
         }
 
@@ -139,10 +139,10 @@ public final class UltimateTag extends JavaPlugin {
         if (gameWorld == null) {
             return;
         }
+
+        Location center = tagger.getLocation();
         if (randomPosition) {
-            Location center = findSuitableCenter(gameWorld);
-        } else {
-            Location center = tagger.getLocation();
+            center = findSuitableCenter(gameWorld);
         }
         gameWorld.getChunkAt(center).load();
         gameWorld.setTime(0);

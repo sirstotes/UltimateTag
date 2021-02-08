@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.*;
+
 public class CommandUltimateTag implements CommandExecutor {
     JavaPlugin plugin;
 
@@ -41,13 +43,13 @@ public class CommandUltimateTag implements CommandExecutor {
                 }
                 if (args[0].equals("timer")) {
                     if (args.length > 1) {
-                        UltimateTag.defaultTimer = (int) args[1];
+                        UltimateTag.defaultTimer = Integer.parseInt(args[1]);
                     }
                     return true;
                 }
                 if (args[0].equals("border")) {
                     if (args.length > 1) {
-                        UltimateTag.borderSize = (int) args[1];
+                        UltimateTag.borderSize = Integer.parseInt(args[1]);
                     }
                     return true;
                 }
@@ -60,8 +62,8 @@ public class CommandUltimateTag implements CommandExecutor {
                     return true;
                 }
                 if (args[0].equals("resetitems")) {
-                    UltimateTag.playerItems = UltimateTag.playerItemsDefault.clone();
-                    UltimateTag.taggerItems = UltimateTag.taggerItemsDefault.clone();
+                    UltimateTag.playerItems = (ArrayList) UltimateTag.playerItemsDefault.clone();
+                    UltimateTag.taggerItems = (ArrayList) UltimateTag.taggerItemsDefault.clone();
                     return true;
                 }
 
