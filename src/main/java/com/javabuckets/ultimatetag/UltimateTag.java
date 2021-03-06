@@ -28,6 +28,7 @@ public final class UltimateTag extends JavaPlugin {
 
     public static ArrayList<Player> contestants = new ArrayList<Player>();
     public static HashMap<Player, Role> roles = new HashMap<Player, Role>();
+    public static Player startingPlayer;
 
     @Override
     public void onEnable() {
@@ -58,7 +59,13 @@ public final class UltimateTag extends JavaPlugin {
                         contestants.forEach(contestant -> contestant.sendMessage("Everyone has been tagged! Taggers win!"));
                         deinitialize();
                     }
-
+                    for (Player contestant : contestants) {
+                        if (roles.get(contestant) != Role.TAGGER) {
+                            contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
+                        } else {
+                            contestant.removePotionEffect(PotionEffectType.GLOWING);
+                        }
+                    }
                     // This will still run if someone lose, so we have to wrap the rest of the checks in another if statement and check if isRunning is still true
                     if (isRunning) {
                         // Last thing to do is to decrease timer
@@ -134,13 +141,14 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         // Decide on a random area for the game
-        World gameWorld = getGameWorld(tagger);
+        World gameWorld = getGameWorld(startingPlayer);
 
         if (gameWorld == null) {
             return;
         }
 
-        Location center = tagger.getLocation();
+        Location center = startingPlayer.getLocation();
+        center = new Location(center.getWorld(), center.getBlockX() + .5, center.getY(), center.getBlockZ() + .5);
         if (randomPosition) {
             center = findSuitableCenter(gameWorld);
         }
@@ -148,8 +156,8 @@ public final class UltimateTag extends JavaPlugin {
         gameWorld.setTime(0);
 
         for (Player contestant : contestants) {
-            int playerRandomX = center.getBlockX() + random.nextInt(borderSize) - borderSize/2;
-            int playerRandomZ = center.getBlockZ() + random.nextInt(borderSize) - borderSize/2;
+            int playerRandomX = center.getBlockX() + (random.nextInt(borderSize*0.9) - borderSize*0.45);
+            int playerRandomZ = center.getBlockZ() + (random.nextInt(borderSize*0.9) - borderSize*0.45);
             int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
@@ -159,13 +167,8 @@ public final class UltimateTag extends JavaPlugin {
 
             if (contestant != tagger) {
                 contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,140, 1));
-
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
-                    }
-                }, 140);
+            } else {
+                contestant.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,140, 1));
             }
 
             // Teleport the contestants
@@ -235,23 +238,9 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
 
         // Target is now a tagger, so give them tagger items
-        ItemStack bow = new ItemStack(Material.BOW);
-        ItemMeta bowMeta = bow.getItemMeta();
-        bowMeta.setUnbreakable(true);
-        bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-        bowMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
-        bow.setItemMeta(bowMeta);
-
-        ItemStack rod = new ItemStack(Material.FISHING_ROD);
-        ItemMeta rodMeta = rod.getItemMeta();
-        rodMeta.setUnbreakable(true);
-        rod.setItemMeta(rodMeta);
-
-        contestant.getInventory().addItem(
-                bow,
-                rod,
-                new ItemStack(Material.ARROW, 1)
-        );
+        for (int i = 0; i < taggerItems.size(); i ++) {
+            contestant.getInventory().addItem(taggerItems.get(i));
+        }
 
         contestant.removePotionEffect(PotionEffectType.GLOWING);
     }
