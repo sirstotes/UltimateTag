@@ -16,6 +16,7 @@ public final class UltimateTag extends JavaPlugin {
 
     public static boolean isRunning = false;
 
+    public static int gameMode = 0;
     public static boolean randomPosition = true;
     public static int borderSize = 64;
     public static int defaultTimer = 2 * 60;
@@ -60,7 +61,7 @@ public final class UltimateTag extends JavaPlugin {
                         deinitialize();
                     }
                     for (Player contestant : contestants) {
-                        if (roles.get(contestant) != Role.TAGGER) {
+                        if (roles.get(contestant) != Role.TAGGER && roles.get(contestant) != Role.FREEZER) {
                             contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
                         } else {
                             contestant.removePotionEffect(PotionEffectType.GLOWING);
@@ -132,7 +133,7 @@ public final class UltimateTag extends JavaPlugin {
         // Assign roles to all contestants
         for (Player contestant : contestants) {
             if (contestant == tagger) {
-                roles.put(contestant, Role.TAGGER);
+                roles.put(contestant, Role.TAGGER ? gameMode == 0 : Role.FREEZER);
                 contestant.sendTitle(ChatColor.RED + "You are the tagger!", "Try to tag everyone else!");
             } else {
                 roles.put(contestant, Role.PLAYER);
@@ -166,9 +167,9 @@ public final class UltimateTag extends JavaPlugin {
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
 
             if (contestant != tagger) {
-                contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,140, 1));
+                contestant.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,10, 1));
             } else {
-                contestant.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,140, 1));
+                contestant.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,10, 1));
             }
 
             // Teleport the contestants
@@ -243,6 +244,19 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         contestant.removePotionEffect(PotionEffectType.GLOWING);
+    }
+    public static void freeze(Player contestant) {
+        UltimateTag.roles.put(contestant, Role.FROZEN);
+
+        contestant.setDisplayName(ChatColor.AQUA + contestant.getName());
+        contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
+
+        contestant.addPotionEffect(PotionEffectType.SLOWNESS, 10000, 10000);
+        contestant.removePotionEffect(PotionEffectType.GLOWING);
+    }
+    public static void unFreeze(Player contestant) {
+        UltimateTag.roles.put(contestant, Role.PLAYER);
+        contestant.removePotionEffect(PotionEffectType.SLOWNESS);
     }
 
     public static Location findSuitableCenter(World world) {

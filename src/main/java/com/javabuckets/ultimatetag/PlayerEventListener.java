@@ -25,6 +25,20 @@ public class PlayerEventListener implements Listener {
                         target.sendMessage(ChatColor.RED + "You've been tagged!");
                         damager.sendMessage("You tagged " + target.getDisplayName() + "!");
                     }
+                    if (UltimateTag.roles.get(damager) == Role.FREEZER && UltimateTag.roles.get(target) == Role.PLAYER) {
+                        UltimateTag.freeze(target);
+
+                        Bukkit.broadcastMessage(target.getDisplayName() + " has been frozen!");
+                        target.sendMessage(ChatColor.BLUE + "You've been frozen!");
+                        damager.sendMessage("You froze " + target.getDisplayName() + "!");
+                    }
+                    if (UltimateTag.roles.get(damager) == Role.PLAYER && UltimateTag.roles.get(target) == Role.FROZEN) {
+                        UltimateTag.unFreeze(target);
+
+                        Bukkit.broadcastMessage(target.getDisplayName() + " has been unfrozen!");
+                        target.sendMessage(ChatColor.BLUE + "You've been unfrozen!");
+                        damager.sendMessage("You unfroze " + target.getDisplayName() + "!");
+                    }
                 }
             }
         }
@@ -35,7 +49,7 @@ public class PlayerEventListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player target = (Player) event.getEntity();
 
-            if (UltimateTag.isRunning) {
+            if (UltimateTag.isRunning && UltimateTag.gameMode == 0) {
                 if (UltimateTag.roles.get(target) == Role.PLAYER) {
                     if (target.getHealth() - event.getDamage() < 1) {
                         UltimateTag.makeTagger(target);
