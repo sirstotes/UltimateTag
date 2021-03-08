@@ -43,7 +43,7 @@ public class CommandUltimateTag implements CommandExecutor {
                     }
 
                     playerSender.sendMessage("All players will be assigned as contestants");
-                    UltimateTag.gameMode = 0
+                    UltimateTag.gameMode = 0;
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                     UltimateTag.randomPosition = args.length > 1;
                     UltimateTag.initialize(plugin);

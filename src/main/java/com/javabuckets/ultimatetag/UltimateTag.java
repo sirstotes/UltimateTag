@@ -133,7 +133,11 @@ public final class UltimateTag extends JavaPlugin {
         // Assign roles to all contestants
         for (Player contestant : contestants) {
             if (contestant == tagger) {
-                roles.put(contestant, Role.TAGGER ? gameMode == 0 : Role.FREEZER);
+                if (gameMode == 0) {
+                    roles.put(contestant, Role.TAGGER);
+                } else {
+                    roles.put(contestant, Role.FREEZER);
+                }
                 contestant.sendTitle(ChatColor.RED + "You are the tagger!", "Try to tag everyone else!");
             } else {
                 roles.put(contestant, Role.PLAYER);
@@ -149,7 +153,7 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         Location center = startingPlayer.getLocation();
-        center = new Location(center.getWorld(), center.getBlockX() + .5, center.getY(), center.getBlockZ() + .5);
+        center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
         if (randomPosition) {
             center = findSuitableCenter(gameWorld);
         }
@@ -157,8 +161,8 @@ public final class UltimateTag extends JavaPlugin {
         gameWorld.setTime(0);
 
         for (Player contestant : contestants) {
-            int playerRandomX = center.getBlockX() + (random.nextInt(borderSize*0.9) - borderSize*0.45);
-            int playerRandomZ = center.getBlockZ() + (random.nextInt(borderSize*0.9) - borderSize*0.45);
+            int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(((double)borderSize)*0.9 - ((double)borderSize)*0.45)));
+            int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(((double)borderSize)*0.9 - ((double)borderSize)*0.45)));
             int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
@@ -251,12 +255,12 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setDisplayName(ChatColor.AQUA + contestant.getName());
         contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
 
-        contestant.addPotionEffect(PotionEffectType.SLOWNESS, 10000, 10000);
+        contestant.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 10000));
         contestant.removePotionEffect(PotionEffectType.GLOWING);
     }
     public static void unFreeze(Player contestant) {
         UltimateTag.roles.put(contestant, Role.PLAYER);
-        contestant.removePotionEffect(PotionEffectType.SLOWNESS);
+        contestant.removePotionEffect(PotionEffectType.SLOW);
     }
 
     public static Location findSuitableCenter(World world) {
