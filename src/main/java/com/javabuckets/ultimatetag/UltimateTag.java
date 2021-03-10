@@ -153,7 +153,7 @@ public final class UltimateTag extends JavaPlugin {
         }
 
         Location center = startingPlayer.getLocation();
-        center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
+        //center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
         if (randomPosition) {
             center = findSuitableCenter(gameWorld);
         }
@@ -161,8 +161,8 @@ public final class UltimateTag extends JavaPlugin {
         gameWorld.setTime(0);
 
         for (Player contestant : contestants) {
-            int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(((double)borderSize)*0.9 - ((double)borderSize)*0.45)));
-            int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(((double)borderSize)*0.9 - ((double)borderSize)*0.45)));
+            int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
+            int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
             int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
