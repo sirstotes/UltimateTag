@@ -80,7 +80,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player target = event.getPlayer();
-        if (UltimateTag.isRunning && UltimateTag.gameMode == 0) {
+        if (UltimateTag.isRunning && UltimateTag.gameMode == 1) {
             if (UltimateTag.roles.get(target) == Role.FROZEN) {
                     event.setCancelled(true);
             }
