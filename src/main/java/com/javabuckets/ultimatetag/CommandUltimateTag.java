@@ -31,7 +31,7 @@ public class CommandUltimateTag implements CommandExecutor {
 
                 UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                 UltimateTag.randomPosition = true;
-                UltimateTag.initialize(plugin);
+                UltimateTag.initialize(plugin, playerSender);
 
                 return true;
 
@@ -46,7 +46,7 @@ public class CommandUltimateTag implements CommandExecutor {
                     UltimateTag.gameMode = 0;
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                     UltimateTag.randomPosition = args.length > 1;
-                    UltimateTag.initialize(plugin);
+                    UltimateTag.initialize(plugin, playerSender);
 
                     return true;
                 }
@@ -95,7 +95,7 @@ public class CommandUltimateTag implements CommandExecutor {
 
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                     UltimateTag.randomPosition = false;
-                    UltimateTag.initialize(plugin);
+                    UltimateTag.initialize(plugin, playerSender);
 
                     return true;
                 }
@@ -112,8 +112,7 @@ public class CommandUltimateTag implements CommandExecutor {
                         UltimateTag.contestants.add(p);
                     }
                 }
-
-                UltimateTag.initialize(plugin); // TODO: /ultimatetag <timer> <win-score>? <border-size> ...<player>
+                UltimateTag.initialize(plugin, playerSender);    // TODO: /ultimatetag <timer> <win-score>? <border-size> ...<player>
             }
         }
 

@@ -29,7 +29,6 @@ public final class UltimateTag extends JavaPlugin {
 
     public static ArrayList<Player> contestants = new ArrayList<Player>();
     public static HashMap<Player, Role> roles = new HashMap<Player, Role>();
-    public static Player startingPlayer;
 
     @Override
     public void onEnable() {
@@ -121,7 +120,7 @@ public final class UltimateTag extends JavaPlugin {
         taggerItems = (ArrayList) taggerItemsDefault.clone();
     }
 
-    public static void initialize(JavaPlugin plugin) {
+    public static void initialize(JavaPlugin plugin, Player startingPlayer) {
         timer = defaultTimer;
         // Decide on a tagger
         Random random = new Random();
@@ -129,7 +128,7 @@ public final class UltimateTag extends JavaPlugin {
         Player tagger = contestants.get(taggerIndex);
         tagger.setDisplayName(ChatColor.AQUA + tagger.getName());
         tagger.setPlayerListName(ChatColor.AQUA + tagger.getName());
-        tagger.sendMessage("Initializing");
+        startingPlayer.sendMessage("Initializing");
 
         // Assign roles to all contestants
         for (Player contestant : contestants) {
@@ -145,7 +144,7 @@ public final class UltimateTag extends JavaPlugin {
                 contestant.sendTitle(ChatColor.RED + tagger.getDisplayName() + " is the tagger!", "Try not to be tagged!");
             }
         }
-        tagger.sendMessage("Deciding Game World");
+        startingPlayer.sendMessage("Deciding Game World");
 
         // Decide on a random area for the game
         World gameWorld = getGameWorld(startingPlayer);
@@ -153,7 +152,7 @@ public final class UltimateTag extends JavaPlugin {
         if (gameWorld == null) {
             return;
         }
-        tagger.sendMessage("Finding Center");
+        startingPlayer.sendMessage("Finding Center");
         Location center = startingPlayer.getLocation();
         center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
         if (randomPosition) {
@@ -167,7 +166,7 @@ public final class UltimateTag extends JavaPlugin {
             int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
-            tagger.sendMessage("Adding Potion Effects");
+            startingPlayer.sendMessage("Adding Potion Effects");
             // Potion effects
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
 
@@ -176,7 +175,7 @@ public final class UltimateTag extends JavaPlugin {
             } else {
                 contestant.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,10, 1));
             }
-            tagger.sendMessage("Teleporting Contestants");
+            startingPlayer.sendMessage("Teleporting Contestants");
             // Teleport the contestants
             contestant.teleport(location);
 
