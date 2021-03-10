@@ -28,7 +28,7 @@ public class CommandUltimateTag implements CommandExecutor {
                 }
 
                 playerSender.sendMessage("All players will be assigned as contestants");
-
+                UltimateTag.gameMode = 0;
                 UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                 UltimateTag.randomPosition = true;
                 UltimateTag.initialize(plugin, playerSender);
@@ -42,8 +42,8 @@ public class CommandUltimateTag implements CommandExecutor {
                         return true;
                     }
 
-                    playerSender.sendMessage("All players will be assigned as contestants");
-                    UltimateTag.gameMode = 0;
+                    playerSender.sendMessage("All players will be assigned as contestants for freeze tag!");
+                    UltimateTag.gameMode = 1;
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                     UltimateTag.randomPosition = args.length > 1;
                     UltimateTag.initialize(plugin, playerSender);
@@ -92,7 +92,7 @@ public class CommandUltimateTag implements CommandExecutor {
                     }
 
                     playerSender.sendMessage("All players will be assigned as contestants");
-
+                    UltimateTag.gameMode = 0;
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
                     UltimateTag.randomPosition = false;
                     UltimateTag.initialize(plugin, playerSender);
@@ -112,6 +112,7 @@ public class CommandUltimateTag implements CommandExecutor {
                         UltimateTag.contestants.add(p);
                     }
                 }
+                UltimateTag.gameMode = 0;
                 UltimateTag.initialize(plugin, playerSender);    // TODO: /ultimatetag <timer> <win-score>? <border-size> ...<player>
             }
         }
