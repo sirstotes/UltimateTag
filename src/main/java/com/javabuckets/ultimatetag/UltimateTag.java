@@ -60,8 +60,8 @@ public final class UltimateTag extends JavaPlugin {
                         deinitialize();
                     }
                     for (Player contestant : contestants) {
-                        if (roles.get(contestant) != Role.TAGGER && roles.get(contestant) != Role.FREEZER) {
-                            contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 2, 1));
+                        if (roles.get(contestant) == Role.PLAYER) {
+                            contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
                         } else {
                             contestant.removePotionEffect(PotionEffectType.GLOWING);
                         }
@@ -261,14 +261,10 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setDisplayName(ChatColor.AQUA + contestant.getName());
         contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
 
-        contestant.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 127));
-        contestant.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1000, 200));
         contestant.removePotionEffect(PotionEffectType.GLOWING);
     }
     public static void unFreeze(Player contestant) {
         UltimateTag.roles.put(contestant, Role.PLAYER);
-        contestant.removePotionEffect(PotionEffectType.SLOW);
-        contestant.removePotionEffect(PotionEffectType.JUMP);
     }
 
     public static Location findSuitableCenter(World world) {

@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 
 public class PlayerEventListener implements Listener {
     @EventHandler
@@ -61,6 +62,27 @@ public class PlayerEventListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
+                if (UltimateTag.roles.get(target) == Role.FROZEN) {
+                    if (target.getHealth() - event.getDamage() < 1) {
+                        UltimateTag.makeTagger(target);
+
+                        Bukkit.broadcastMessage(target.getDisplayName() + " died and is now also a freezer!");
+                        target.sendMessage(ChatColor.RED + "Because you died you are a now a freezer!");
+
+                        target.setHealth(20);
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerVelocityEvent event) {
+        Player target = event.getPlayer();
+        if (UltimateTag.isRunning && UltimateTag.gameMode == 0) {
+            if (UltimateTag.roles.get(target) == Role.FROZEN) {
+                    event.setCancelled(true);
             }
         }
     }
