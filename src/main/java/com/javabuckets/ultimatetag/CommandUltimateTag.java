@@ -45,7 +45,7 @@ public class CommandUltimateTag implements CommandExecutor {
                     playerSender.sendMessage("All players will be assigned as contestants for freeze tag!");
                     UltimateTag.gameMode = 1;
                     UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
-                    UltimateTag.randomPosition = args.length > 1;
+                    UltimateTag.randomPosition = args.length > 2;
                     UltimateTag.initialize(plugin, playerSender);
 
                     return true;

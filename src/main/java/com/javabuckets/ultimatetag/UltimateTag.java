@@ -234,6 +234,8 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setDisplayName(contestant.getName());
         contestant.setPlayerListName(contestant.getName());
         contestant.setGameMode(GameMode.SURVIVAL);
+        for (PotionEffect effect : contestant.getActivePotionEffects())
+            contestant.removePotionEffect(effect.getType());
     }
 
     public static void makeTagger(Player contestant) {
@@ -260,11 +262,13 @@ public final class UltimateTag extends JavaPlugin {
         contestant.setPlayerListName(ChatColor.AQUA + contestant.getName());
 
         contestant.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 127));
+        contestant.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1000, 200));
         contestant.removePotionEffect(PotionEffectType.GLOWING);
     }
     public static void unFreeze(Player contestant) {
         UltimateTag.roles.put(contestant, Role.PLAYER);
         contestant.removePotionEffect(PotionEffectType.SLOW);
+        contestant.removePotionEffect(PotionEffectType.JUMP);
     }
 
     public static Location findSuitableCenter(World world) {
