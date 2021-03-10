@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerEventListener implements Listener {
     @EventHandler
@@ -78,7 +78,7 @@ public class PlayerEventListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerVelocityEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player target = event.getPlayer();
         if (UltimateTag.isRunning && UltimateTag.gameMode == 0) {
             if (UltimateTag.roles.get(target) == Role.FROZEN) {

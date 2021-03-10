@@ -61,7 +61,7 @@ public final class UltimateTag extends JavaPlugin {
                     }
                     for (Player contestant : contestants) {
                         if (roles.get(contestant) == Role.PLAYER) {
-                            contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
+                            contestant.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 100, 1));
                         } else {
                             contestant.removePotionEffect(PotionEffectType.GLOWING);
                         }
