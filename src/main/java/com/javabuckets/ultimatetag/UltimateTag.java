@@ -129,6 +129,7 @@ public final class UltimateTag extends JavaPlugin {
         Player tagger = contestants.get(taggerIndex);
         tagger.setDisplayName(ChatColor.AQUA + tagger.getName());
         tagger.setPlayerListName(ChatColor.AQUA + tagger.getName());
+        tagger.sendMessage("Initializing");
 
         // Assign roles to all contestants
         for (Player contestant : contestants) {
@@ -144,6 +145,7 @@ public final class UltimateTag extends JavaPlugin {
                 contestant.sendTitle(ChatColor.RED + tagger.getDisplayName() + " is the tagger!", "Try not to be tagged!");
             }
         }
+        tagger.sendMessage("Deciding Game World");
 
         // Decide on a random area for the game
         World gameWorld = getGameWorld(startingPlayer);
@@ -151,22 +153,21 @@ public final class UltimateTag extends JavaPlugin {
         if (gameWorld == null) {
             return;
         }
-
+        tagger.sendMessage("Finding Center");
         Location center = startingPlayer.getLocation();
-        //center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
+        center = new Location(center.getWorld(), center.getBlockX(), center.getY(), center.getBlockZ());
         if (randomPosition) {
             center = findSuitableCenter(gameWorld);
         }
         gameWorld.getChunkAt(center).load();
         gameWorld.setTime(0);
-
         for (Player contestant : contestants) {
             int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
             int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
             int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
 
             Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
-
+            tagger.sendMessage("Adding Potion Effects");
             // Potion effects
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
 
@@ -175,7 +176,7 @@ public final class UltimateTag extends JavaPlugin {
             } else {
                 contestant.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,10, 1));
             }
-
+            tagger.sendMessage("Teleporting Contestants");
             // Teleport the contestants
             contestant.teleport(location);
 
