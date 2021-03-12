@@ -161,11 +161,22 @@ public final class UltimateTag extends JavaPlugin {
         gameWorld.getChunkAt(center).load();
         gameWorld.setTime(0);
         for (Player contestant : contestants) {
-            int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
-            int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
-            int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
+            boolean validLocation = false;
+            while(!validLocation) {
+                int playerRandomX = center.getBlockX() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
+                int playerRandomZ = center.getBlockZ() + (random.nextInt((int)Math.round(borderSize*0.9 - borderSize*0.5)));
+                int playerRandomY = gameWorld.getHighestBlockYAt(playerRandomX, playerRandomZ);
+                if (gameWorld.getHighestBlockAt(playerRandomX, playerRandomZ).getType() == Material.BEDROCK || gameWorld.getHighestBlockAt(playerRandomX, playerRandomZ).getType() == Material.DARK_OAK_LEAVES) {
+                    for(int i = playerRandomY; i >= 2; i --) {
+                        if (gameWorld.getBlockAt(playerRandomX, i, playerRandomZ) == Material.AIR && gameWorld.getBlockAt(playerRandomX, i-1, playerRandomZ) == Material.AIRgameWorld.getBlockAt(playerRandomX, i, playerRandomZ).isSolid()) {
+                            playerRandomY = i-1;
+                            validLocation = true;
+                        }
+                    }
+                }
+            }
 
-            Location location = new Location(gameWorld, playerRandomX, playerRandomY + 1, playerRandomZ);
+            Location location = new Location(gameWorld, playerRandomX, playerRandomY, playerRandomZ);
             startingPlayer.sendMessage("Adding Potion Effects");
             // Potion effects
             contestant.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 3));
